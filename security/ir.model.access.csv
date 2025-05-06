@@ -8,6 +8,12 @@ access_refund_accountant,access.logic.leads.accounts,model_refund_payment,refund
 access_refund_manager_app,access.logic.leads.accounts,model_refund_payment,refund_17.refund_manager,1,1,1,0
 access_refund_a_teach,access.logic.leads.accounts,model_refund_payment,refund_17.group_refund_teacher,1,0,0,0
 access_refund_a_head,access.logic.leads.accounts,model_refund_payment,refund_17.group_refund_marketing_head,1,0,0,0
+access_refund_super_admin,access.student.refund.manager,model_student_refund,logic_base_17.base_admin,1,1,1,1
+access_refund_super_admin_payment,access.logic.leads.accounts,model_refund_payment,logic_base_17.base_admin,1,1,1,1
+access_refund_base_super_admin,access.logic.leads.accounts,model_refund_invoice_details,logic_base_17.base_admin,1,1,1,1
+access_refund_deduction_super_Admin,access.logic.leads.accounts,model_refund_deduction,logic_base_17.base_admin,1,1,1,1
+revert_to_teacher_super_admin,access.logic.refund,model_student_refund_reverted_records,logic_base_17.base_admin,1,1,1,1
+
 
 access_refund_base,access.logic.leads.accounts,model_refund_invoice_details,refund_17.refund_manager,1,1,1,1
 access_refund_deduction_base,access.logic.leads.accounts,model_refund_deduction,refund_17.group_refund_accounts,1,1,1,1

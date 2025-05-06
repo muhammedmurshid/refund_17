@@ -2,7 +2,7 @@
     'name': "Refund",
     'version': "17.0.1.0",
     'sequence': "0",
-    'depends': ['base', 'web', 'mail', 'openeducat_core'],
+    'depends': ['base', 'web', 'mail', 'openeducat_core','logic_base_17'],
     'data': [
         'data/activity.xml',
         'security/security.xml',
