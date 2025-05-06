@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mail_activity_refund_alert_custome" model="mail.activity.type">
+        <field name="name">Refund Alert</field>
+        <field name="res_model">student.refund</field>
+        <field name="delay_count">0</field>
+        <field name="icon">fa-tasks</field>
+    </record>
+
+    <data noupdate="1">
+        <record id="action_refund_portal" model="ir.actions.server">
+            <field name="name">Share</field>
+            <field name="model_id" ref="refund_17.model_student_refund"/>
+            <field name="binding_model_id" ref="refund_17.model_student_refund"/>
+            <field name="binding_view_types">form</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_share()</field>
+        </record>
+        <record id="ir_refund_payment_teacher_5_days" model="ir.cron">
+            <field name="name">Refund Tes</field>
+            <field name="model_id" ref="model_student_refund"/>
+            <field name="state">code</field>
+            <field name="code">model.teacher_refund_activity()</field>
+            <field name="active" eval="True"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+        <record id="ir_refund_payment_after_head_5_days" model="ir.cron">
+            <field name="name">Refund Head</field>
+            <field name="model_id" ref="model_student_refund"/>
+            <field name="state">code</field>
+            <field name="code">model.head_refund_activity()</field>
+            <field name="active" eval="True"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+<!--        <record id="remove_activity_for_managers_after_approve" model="ir.cron">-->
+<!--            <field name="name">Remove manager refund request</field>-->
+<!--            <field name="model_id" ref="model_student_refund"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">model.remove_activity_for_manager()</field>-->
+<!--            <field name="active" eval="True"/>-->
+<!--            <field name="interval_number">1</field>-->
+<!--            <field name="interval_type">minutes</field>-->
+<!--            <field name="numbercall">-1</field>-->
+<!--            <field name="doall" eval="False"/>-->
+<!--        </record>-->
+        <record id="ir_refund_payment_marketing_manager_5_days" model="ir.cron">
+            <field name="name">Refund Manager</field>
+            <field name="model_id" ref="model_student_refund"/>
+            <field name="state">code</field>
+            <field name="code">model.marketing_refund_activity()</field>
+            <field name="active" eval="True"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+        <record id="accounts_request_activity_remove" model="ir.cron">
+            <field name="name">Accounts activity remove</field>
+            <field name="model_id" ref="model_student_refund"/>
+            <field name="state">code</field>
+            <field name="code">model.remove_activity_for_accounts()</field>
+            <field name="active" eval="True"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+        <record id="ir_accounts_notification_days" model="ir.cron">
+            <field name="name">Refund Request For Accounts</field>
+            <field name="model_id" ref="model_student_refund"/>
+            <field name="state">code</field>
+            <field name="code">model.accounts_request_refund_activity()</field>
+            <field name="active" eval="True"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+    </data>
+</odoo>

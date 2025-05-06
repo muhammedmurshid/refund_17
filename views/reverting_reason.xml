@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="refund_revert_to_teacher" model="ir.ui.view">
+        <field name="name">Refund revert</field>
+        <field name="model">student.refund.reverted.records</field>
+        <field name="arch" type="xml">
+            <form string="Reverting">
+                <group>
+                    <group class="oe_title">
+                        <field name="reason_for_reverting"/>
+                        <field name="user" invisible="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Done" class="oe_highlight" type="object" name='action_done_teacher' invisible="user != 'teacher'"/>
+                    <button string="Done" class="oe_highlight" type="object" name='action_done_academic_head' invisible="user != 'head_assign'"/>
+                    <button string="Done" class="oe_highlight" type="object" name='action_done_manager' invisible="user != 'manager'"/>
+                    <button string="Discard" type="object" special='cancel'/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

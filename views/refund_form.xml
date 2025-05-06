@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!--        <record id="website_menu_request" model="website.menu">-->
+        <!--            <field name="name">Student Refund</field>-->
+        <!--            <field name="url">/refund/form</field>-->
+        <!--            <field name="parent_id" ref="website.main_menu"/>-->
+        <!--            <field name="sequence" type="int">50</field>-->
+        <!--        </record>-->
+        <template id="tmp_refund_form" name="Refund Request Form">
+            <t t-call="website.layout">
+                <script type="text/javascript" src="refund_17/static/src/js/submitt_button.js"/>
+                <div id="wrap_refund">
+                    <div class="container">
+                        <div class="col-md-12">
+                            <form action="/refund/form/submit" style="background-color:#fafafa">
+                                <br></br>
+                                <h3 align="center">REFUND REQUEST FORM</h3>
+                                <br></br>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field" >
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Student Name:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="student_name" type="student_name"
+                                                   class="form-control s_website_form_input"
+                                                   name="student_name" placeholder="Student name" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Course:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <select name="customer_id"
+                                                    id="customer_id"
+                                                    class="form-control link-style">
+                                                <option value="">
+                                                    Course...
+                                                </option>
+                                                <t t-foreach="course"
+                                                   t-as="course">
+                                                    <option t-att-value="course.id">
+                                                        <t t-esc="course.name"
+                                                           t-att-value="course.id" required=" "/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <!--                                        <div class="col-sm">-->
+                                        <!--                                            <input id="course" type="course"-->
+                                        <!--                                                   class="form-control s_website_form_input"-->
+                                        <!--                                                   name="course" required=" "/>-->
+                                        <!--                                        </div>-->
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Batch:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="batch" type="batch"
+                                                   class="form-control s_website_form_input"
+                                                   name="batch" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Branch:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="branch" type="branch"
+                                                   class="form-control s_website_form_input"
+                                                   name="branch" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Admission No:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="admission_no" type="admission_no"
+                                                   class="form-control s_website_form_input"
+                                                   name="admission_no" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Phone Number:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="phone" type="number"
+                                                   class="form-control s_website_form_input"
+                                                   name="phone" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Parent Number:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="parent_no" type="number"
+                                                   class="form-control s_website_form_input"
+                                                   name="parent_no" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Email:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="email" type="email"
+                                                   class="form-control s_website_form_input"
+                                                   name="email" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Account Number:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="account_no" type="char"
+                                                   class="form-control s_website_form_input"
+                                                   name="account_no" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Account Holder Name:
+                                            </span>
+                                            <!--                                            <span class="s_website_form_mark">-->
+                                            <!--                                                *-->
+                                            <!--                                            </span>-->
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="account_holder" type="char"
+                                                   class="form-control s_website_form_input"
+                                                   name="account_holder" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                IFSC Code:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="ifsc_code" type="char"
+                                                   class="form-control s_website_form_input"
+                                                   name="ifsc_code" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Bank Name:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="bank_name" type="char"
+                                                   class="form-control s_website_form_input"
+                                                   name="bank_name" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <div class="col-sm-2">
+                                            <label class="control-label">
+                                                <span>Invoice Number:</span>
+                                                <span class="s_website_form_mark">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input id="invoice_no_one" type="char"
+                                                   class="form-control s_website_form_input"
+                                                   name="invoice_no_one" required=" "
+                                                   placeholder="2023-24/1257"/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class="control-label">
+                                                <span class="s_website_form_label_content">
+                                                    Invoice Date:
+                                                </span>
+                                                <span class="s_website_form_mark">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input id="invoice_date_one" type="date"
+                                                   class="form-control s_website_form_input"
+                                                   name="invoice_date_one" placeholder="yyyy-mm-dd"
+                                                   required=" "/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class="control-label">
+                                                <span>Paid Amount:</span>
+                                                <span class="s_website_form_mark">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input id="amount_one" type="number"
+                                                   class="form-control s_website_form_input"
+                                                   name="amount_one" required=""/>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+
+
+                                        <div class="col-sm-2">
+                                            <label class="control-label">Invoice Number:</label>
+                                            <input id="invoice_no_three" type="char"
+                                                   class="form-control s_website_form_input"
+                                                   name="invoice_no_three"
+                                                   placeholder="2023-24/1257"/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class="control-label">Invoice Date:</label>
+                                            <input id="invoice_date_three" type="date"
+                                                   class="form-control s_website_form_input"
+                                                   name="invoice_date_three" placeholder="yyyy-mm-dd"/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class="control-label">Paid Amount:</label>
+                                            <input id="amount_three" type="number"
+                                                   class="form-control s_website_form_input"
+                                                   name="amount_three"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="date" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <div class="col-sm-2">
+                                            <label class="control-label">Invoice Number:</label>
+                                            <input id="invoice_no_two" type="char"
+                                                   class="form-control s_website_form_input"
+                                                   name="invoice_no_two"
+                                                   placeholder="2023-24/1257"/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class="control-label">Invoice Date:</label>
+                                            <input id="invoice_date_two" type="date"
+                                                   class="form-control s_website_form_input"
+                                                   name="invoice_date_two" placeholder="yyyy-mm-dd"/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class="control-label">Paid Amount:</label>
+                                            <input id="amount_two" type="number"
+                                                   class="form-control s_website_form_input"
+                                                   name="amount_two"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="text" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Reason for Refund:
+                                            </span>
+                                            <span class="s_website_form_mark">
+                                                *
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="reason" type="reason"
+                                                   class="form-control s_website_form_input"
+                                                   name="reason" required=" "/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px">
+                                            <span class="s_website_form_label_content">
+                                                Total Paid:
+                                            </span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="amount_total" type="text"
+                                                   class="form-control s_website_form_input"
+                                                   name="amount_total"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!--                                <div class="form-group">-->
+                                <!--                                    <label for="name">Phone:</label>-->
+                                <!--                                    <input type="text" class="form-control" name="phone"-->
+                                <!--                                           id="phone" required="true"/>-->
+                                <!--                                </div>-->
+
+
+                                <p>I understand that the refund amount will be determined based on the institution's
+                                    policies. A full refund may not be granted.
+                                    I am aware that the institution reserves the right to reject refund requests in
+                                    certain cases.
+                                </p>
+                                <div class="form-group col-6 s_website_form_field s_website_form_required"
+                                     data-type="text" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <div>
+                                            <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
+                                            <label for="vehicle1">I agree</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 s_website_form_submit"
+                                     data-name="Submit Button" align="center">
+                                    <div style="width: 200px;"
+                                         class="s_website_form_label"/>
+                                    <button type="submit" id="submit" align="center"
+                                            class="btn btn-primary">Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <!--        <record id="contactus_thanks_refund" model="website.page">-->
+        <!--            <field name="name">Thanks (Contact us)</field>-->
+        <!--            <field name="type">qweb</field>-->
+        <!--            <field name="url">/contactus-thank-you</field>-->
+        <!--            <field name="website_indexed" eval="False"/>-->
+        <!--            <field name="is_published">True</field>-->
+        <!--            <field name="key">website_form.contactus_thanks</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <t name="Thanks (Contact us)" t-name="website_form.contactus_thanks">-->
+        <!--                    <t t-call="website.layout">-->
+        <!--                        <div id="wrap">-->
+        <!--                            <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_1"/>-->
+        <!--                            <div class="container mt-4">-->
+        <!--                                <div class="row">-->
+        <!--                                    <div class="col-lg-7 col-xl-6 mr-lg-auto oe_structure">-->
+        <!--                                        <section class="pt40 s_text_block pb40 o_colored_level o_cc o_cc1"-->
+        <!--                                                 data-snippet="s_text_block" data-name="Text">-->
+        <!--                                            <div class="container">-->
+        <!--                                                <span class="d-block fa fa-4x fa-thumbs-up mx-auto rounded-circle bg-primary"/>-->
+        <!--                                                <br/>-->
+        <!--                                                <h1 class="text-center">Thank You!</h1>-->
+        <!--                                                <div class="pb16 pt16 s_hr" data-snippet="s_hr" data-name="Separator">-->
+        <!--                                                    <hr class="mx-auto border-top w-50 border-dark text-center"/>-->
+        <!--                                                </div>-->
+        <!--                                                <h5 class="text-center">-->
+        <!--                                                    <span class="fa fa-check-circle"/>-->
+        <!--                                                    <span>Your message has been sent-->
+        <!--                                                        <b>successfully</b>-->
+        <!--                                                    </span>-->
+        <!--                                                </h5>-->
+        <!--                                                <p class="text-center">We will get back to you shortly.</p>-->
+        <!--                                            </div>-->
+        <!--                                        </section>-->
+        <!--                                    </div>-->
+        <!--                                    <div class="col-lg-4">-->
+        <!--                                        <t t-call="website.company_description"/>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_2"/>-->
+        <!--                        </div>-->
+        <!--                    </t>-->
+        <!--                </t>-->
+        <!--            </field>-->
+        <!--        </record>-->
+        <template id="tmp_refund_form_success" name="Customer Form Successfully Submitted">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_1"/>
+                    <div class="container mt-4">
+                        <div class="row">
+                            <div class="col-lg-7 col-xl-6 mr-lg-auto oe_structure">
+                                <section class="pt40 s_text_block pb40 o_colored_level o_cc o_cc1"
+                                         data-snippet="s_text_block" data-name="Text">
+                                    <div class="container">
+                                        <span class="d-block fa fa-4x fa-thumbs-up mx-auto rounded-circle bg-primary"/>
+                                        <br/>
+                                        <h1 class="text-center">Thank You!</h1>
+                                        <div class="pb16 pt16 s_hr" data-snippet="s_hr" data-name="Separator">
+                                            <hr class="mx-auto border-top w-50 border-dark text-center"/>
+                                        </div>
+                                        <h5 class="text-center">
+                                            <span class="fa fa-check-circle"/>
+                                            <span>Your refund request has been sent
+                                                <b>successfully</b>
+                                            </span>
+                                        </h5>
+                                        <p class="text-center">We will get back to you shortly.</p>
+                                    </div>
+                                </section>
+                            </div>
+<!--                            <div class="col-lg-4">-->
+<!--                                <t t-call="website.company_description"/>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                    <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_2"/>
+                </div>
+            </t>
+        </template>
+        <!--        <template id="tmp_refund_form_success" name="Customer Form Successfully Submitted">-->
+        <!--            <t t-call="website.layout">-->
+        <!--                <div id="wrap">-->
+        <!--                    <div class="container">-->
+        <!--                        <div class="col-md-12">-->
+        <!--                            <div class="alert alert-success">-->
+        <!--                                Refund Request Completed..-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </t>-->
+        <!--        </template>-->
+<!--        <template id="refund_17_assets" inherit_id="web.assets_frontend" name="Refund 17 Assets">-->
+<!--            <xpath expr="." position="inside">-->
+<!--                <script type="text/javascript" src="/refund_17/static/src/js/submitt_button.js"/>-->
+<!--            </xpath>-->
+<!--        </template>-->
+
+    </data>
+</odoo>
