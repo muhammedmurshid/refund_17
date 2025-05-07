@@ -27,3 +27,4 @@ access_refund_base_acc,access.logic.leads.accounts,model_refund_invoice_details,
 revert_to_teacher,access.logic.refund,model_student_refund_reverted_records,refund_17.group_refund_accounts,1,1,1,1
 
 assign_wizard_access,assign_wizard_access,model_assignment_wizard_refund,,1,1,1,1
+assign_refund_link_access,assign_refund_link_access,model_refund_link,,1,1,1,1

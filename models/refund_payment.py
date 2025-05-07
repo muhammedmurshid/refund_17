@@ -218,3 +218,8 @@ class StudentRefundRevertedRecords(models.TransientModel):
                 expense['total_refund'], target_currency, self.env.company, fields.Date.today())
             expense_state[state]['amount'] += amount
         return expense_state
+
+class RefundLink(models.TransientModel):
+    _name = 'refund.link'
+
+    name = fields.Char(string="Refund Link", default="https://web.logicschool.org/refund/form", readonly=1)

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="refund_link_view_form" model="ir.ui.view">
+        <field name="name">refund.link.view.form</field>
+        <field name="model">refund.link</field>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <form string="Refund Link">
+
+                <div align="center">
+                    <field name="name" widget="url"/>
+                </div>
+
+
+                <footer>
+                    <!--                    <button name="act_confirm" string="Confirm" type="object" class="oe_highlight"/>-->
+                    <button name="cancel" string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--    <record id="action_redirect_refund_link" model="ir.actions.server">-->
+    <!--        <field name="name">Redirect to Refund Link</field>-->
+    <!--        <field name="model_id" ref="refund_17.model_ir_actions_server"/>-->
+    <!--        <field name="state">code</field>-->
+    <!--        <field name="code">-->
+    <!--            action = {-->
+    <!--            'type': 'ir.actions.act_window',-->
+    <!--            'name': 'Refund Link',-->
+    <!--            'view_mode': 'form',-->
+    <!--            'res_model': 'refund.link',-->
+    <!--            'target': 'current',-->
+    <!--            }-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <record id="action_refund_link" model="ir.actions.act_window">
+        <field name="name">Refund Link</field>
+        <field name="res_model">refund.link</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field> <!-- or 'current' if you want to stay in same window -->
+    </record>
+
+    <menuitem name="Refund Link" id="menu_refund_link" action="action_refund_link"
+              parent="menu_student_refund"/>
+
+</odoo>

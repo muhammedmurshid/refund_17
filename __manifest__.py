@@ -13,7 +13,8 @@
         'views/refund_payment_details.xml',
         'views/reverting_reason.xml',
         # 'views/portal_page.xml',
-        'views/assignment_wizard.xml'
+        'views/assignment_wizard.xml',
+        'views/refund_link.xml'
 
     ],
     'assets': {
