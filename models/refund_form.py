@@ -11,14 +11,14 @@ class StudentRefund(models.Model):
     _rec_name = 'reference_no'
     _description = "Refund"
 
-    student_name = fields.Char(string='Name', readonly=True)
-    reference_no = fields.Char(string="Sequence Number", readonly=True, required=True,
+    student_name = fields.Char(string='Name', )
+    reference_no = fields.Char(string="Sequence Number", required=True,
                                copy=False, default='New')
-    batch = fields.Char(string='Batch', readonly=True)
-    course = fields.Many2one('op.course', string='Course', readonly=True)
-    email = fields.Char(string='Email', readonly=True)
-    phone_number = fields.Char(string='Phone Number', widget='phone', readonly=True)
-    reason = fields.Text(string='Student Reason', readonly=True)
+    batch = fields.Char(string='Batch')
+    course = fields.Many2one('op.course', string='Course')
+    email = fields.Char(string='Email')
+    phone_number = fields.Char(string='Phone Number', widget='phone')
+    reason = fields.Text(string='Student Reason')
     currency_id = fields.Many2one('res.currency', string='Currency',
                                   default=lambda self: self.env.user.company_id.currency_id)
     ded_ids = fields.One2many('refund.deduction', 'ded_id', string='Deduction')
@@ -34,10 +34,10 @@ class StudentRefund(models.Model):
     ], string='Status', default='accountant', tracking=True)
     assign_head = fields.Many2one('res.users', string='Assign head')
 
-    branch = fields.Char('Branch', readonly=True)
-    student_admission_no = fields.Char('Admission Number', readonly=True)
-    parent_number = fields.Char('Parent Number', readonly=True)
-    # invoice_number = fields.Text('Invoice number', readonly=True)
+    branch = fields.Char('Branch')
+    student_admission_no = fields.Char('Admission Number',)
+    parent_number = fields.Char('Parent Number')
+    # invoice_number = fields.Text('Invoice number')
 
     sat_class = fields.Integer(string='How many days he sat in the class')
     teacher_reason = fields.Text('Remarks for teacher')
@@ -148,7 +148,7 @@ class StudentRefund(models.Model):
         for rec in self:
             rec.amount = rec.ref_total
 
-    amount = fields.Float(string='Amount', readonly=True, compute='total_amount_refund', store=True)
+    amount = fields.Float(string='Amount', compute='total_amount_refund', store=True)
 
     def confirm_assign(self):
         return {'type': 'ir.actions.act_window',
@@ -268,11 +268,9 @@ class StudentRefund(models.Model):
     def get_accountant(self):
         print('kkkll')
         user_crnt = self.env.user.id
-
         res_user = self.env['res.users'].search([('id', '=', self.env.user.id)])
         if res_user.has_group('refund_17.group_refund_accounts'):
             self.make_visible_accountant = False
-
         else:
             self.make_visible_accountant = True
 
@@ -282,11 +280,9 @@ class StudentRefund(models.Model):
     def get_head(self):
         print('kkkll')
         user_crnt = self.env.user.id
-
         res_user = self.env['res.users'].search([('id', '=', self.env.user.id)])
         if res_user.has_group('refund_17.group_refund_marketing_head'):
             self.make_visible_head = False
-
         else:
             self.make_visible_head = True
 
@@ -298,12 +294,8 @@ class StudentRefund(models.Model):
         res = super(StudentRefund, self).create(vals)
         return res
 
-    # def accountant_approval(self):
-    #     # self.make_visible_teacher = True
-    #     self.status = 'teacher'
     def teacher_approval(self):
         self.message_post(body="Teacher is approved")
-
         self.status = 'head_assign'
         activity_id = self.env['mail.activity'].search([('res_id', '=', self.id), ('user_id', '=', self.env.user.id), (
             'activity_type_id', '=', self.env.ref('refund_17.mail_activity_refund_alert_custome').id)])
@@ -317,11 +309,8 @@ class StudentRefund(models.Model):
                 'type': 'rainbow_man',
             }
         }
-        # self.activity_schedule('refund_logic.mail_activity_refund_alert_custome', user_id=user.id,
-        #                        note='Please Approve')
 
     def head_approval(self):
-        # print(self.assign_to.parent_id.user_id.name, 'jjj')
         self.status = 'manager'
         activity_id = self.env['mail.activity'].search(
             [('res_id', '=', self.id), ('user_id', '=', self.env.user.id), (
