@@ -158,6 +158,12 @@ class StudentRefund(models.Model):
                 'view_mode': 'form',
                 'context': {'default_refund_id': self.id, }, }
 
+    def act_add_refund_amount(self):
+        refund = self.env['student.refund'].search([])
+        for i in refund:
+            if i.total_all_refund != 0:
+                i.total_all_refund = i.refund_allowed_amount
+
     # def confirm_assign(self):
     #     if not self.assign_to:
     #         raise UserError('Please assign a Teacher..')

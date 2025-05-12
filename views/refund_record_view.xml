@@ -74,6 +74,16 @@
             </search>
         </field>
     </record>
+    <record id="refund_amt_bulk_adding" model="ir.actions.server">
+        <field name="name">Bulk Add Amount</field>
+        <field name="model_id" ref="refund_17.model_student_refund"/>
+        <field name="binding_model_id" ref="refund_17.model_student_refund"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.act_add_refund_amount()
+        </field>
+    </record>
 
     <record id="faculty_details_basic_view" model="ir.ui.view">
         <field name="name">Refund</field>
@@ -228,7 +238,7 @@
                         <group class="oe_subtotal_footer oe_right" colspan="2" name="ref_total">
                             <field name="total_deduction" widget="monetary"/>
                             <field name="refund_allowed_amt" widget="monetary"
-                                  readonly="make_visible_accountant == True"/>
+                                   readonly="make_visible_accountant == True"/>
                             <div class="oe_subtotal_footer_separator oe_inline">
                                 <label for="total_all_refund"/>
                             </div>
