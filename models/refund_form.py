@@ -162,7 +162,7 @@ class StudentRefund(models.Model):
         refund = self.env['student.refund'].search([])
         for i in refund:
             if i.total_all_refund != 0:
-                i.total_all_refund = i.refund_allowed_amount
+                i.total_all_refund = i.refund_allowed_amt
 
     # def confirm_assign(self):
     #     if not self.assign_to:
