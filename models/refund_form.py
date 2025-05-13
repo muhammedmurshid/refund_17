@@ -10,6 +10,7 @@ class StudentRefund(models.Model):
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
     _rec_name = 'reference_no'
     _description = "Refund"
+    _order = 'id desc'
 
     student_name = fields.Char(string='Name', )
     reference_no = fields.Char(string="Sequence Number", required=True,

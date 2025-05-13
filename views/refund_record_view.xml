@@ -5,7 +5,7 @@
         <field name="model">student.refund</field>
         <field name="arch" type="xml">
             <tree multi_edit="1">
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" invisible="1" optional="hide"/>
                 <field name="reference_no"/>
                 <field name="create_date" string="Refund Date" type="Date"/>
                 <field name="student_name"/>
