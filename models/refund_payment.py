@@ -6,6 +6,7 @@ class RefundPayment(models.Model):
     _name = 'refund.payment'
     _inherit = 'mail.thread'
     _description = 'Refund Payment'
+    _order = 'id desc'
 
     name = fields.Char(string='Name', readonly=True)
     amount = fields.Float(string='Total Refund', readonly=True)
