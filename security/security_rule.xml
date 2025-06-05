@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="refund_assign_teacher" model="ir.rule">
-        <field name="name">Assign Teacher</field>
-        <field name="model_id" ref="model_student_refund"/>
-        <field name="domain_force">[('assign_to.user_id.id', '=', user.id)]</field>
-        <field name="groups" eval="[(4, ref('group_refund_teacher'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
-    </record>
-    <record id="refund_assign_head" model="ir.rule">
-        <field name="name">Assign Head</field>
-        <field name="model_id" ref="model_student_refund"/>
-        <field name="domain_force">[('teacher_head_id.id', '=', user.id)]</field>
-        <field name="groups" eval="[(4, ref('group_refund_marketing_head'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
-    </record>
+    <data noupdate="1">
+        <record id="refund_assign_teacher" model="ir.rule">
+            <field name="name">Assign Teacher</field>
+            <field name="model_id" ref="model_student_refund"/>
+            <field name="domain_force">[('assign_to.user_id.id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_refund_teacher'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="refund_assign_head" model="ir.rule">
+            <field name="name">Assign Head</field>
+            <field name="model_id" ref="model_student_refund"/>
+            <field name="domain_force">[('teacher_head_id.id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_refund_marketing_head'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
 </odoo>
