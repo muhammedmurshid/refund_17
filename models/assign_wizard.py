@@ -32,3 +32,8 @@ class AssignWizard(models.TransientModel):
                 'type': 'rainbow_man',
             }
         }
+
+    @api.onchange('student_id')
+    def _onchange_student_id(self):
+        if self.student_id:
+            self.admission_id = self.student_id.gr_no
