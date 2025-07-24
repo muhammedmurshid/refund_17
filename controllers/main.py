@@ -5,7 +5,7 @@ from odoo.http import request
 class PartnerForm(http.Controller):
     @http.route(['/refund/form'], type='http', auth="public", website=True, csrf=False)
     def partner_form(self, **kw):
-        course = request.env['op.course'].search([])
+        course = request.env['op.course'].sudo().search([])
         student_name = request.env['op.student'].sudo().search([])
         print(student_name)
         values = {

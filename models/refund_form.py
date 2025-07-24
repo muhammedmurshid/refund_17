@@ -34,12 +34,10 @@ class StudentRefund(models.Model):
         ('paid', 'Paid'),
     ], string='Status', default='accountant', tracking=True)
     assign_head = fields.Many2one('res.users', string='Assign head')
-
     branch = fields.Char('Branch')
     student_admission_no = fields.Char('Admission Number',)
     parent_number = fields.Char('Parent Number')
     # invoice_number = fields.Text('Invoice number')
-
     sat_class = fields.Integer(string='How many days he sat in the class')
     teacher_reason = fields.Text('Remarks for teacher')
     head_reason = fields.Text('Remarks of Academic Head')
