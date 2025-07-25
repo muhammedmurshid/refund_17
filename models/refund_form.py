@@ -63,7 +63,8 @@ class StudentRefund(models.Model):
     ifsc_code = fields.Char(string='IFSC Code')
     bank_name = fields.Char(string='Bank Name')
     student_id = fields.Many2one('op.student', string="Student")
-
+    reject_reason = fields.Text(string="Reject Reason")
+    reject_date = fields.Date(string="Reject Date")
 
     @api.depends('inv_ids.refund_amt')
     def _amount_all(self):
@@ -95,6 +96,16 @@ class StudentRefund(models.Model):
         })
 
     total_deduction = fields.Float(string='Total Deduction', compute='_amount_deduction_all', store=True)
+
+    def get_students(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Students',
+            'view_mode': 'tree,form',
+            'res_model': 'op.student',
+            'domain': [('id', '=', self.student_id.id)],
+            'context': "{'create': False}"
+        }
 
     @api.depends('total_deduction', 'ref_total', 'refund_allowed_amt')
     def _amount_total_refund(self):
@@ -163,59 +174,6 @@ class StudentRefund(models.Model):
             if i.total_all_refund == 0:
                 print(i.id, 'dhdf', i.total_all_refund)
                 i.total_all_refund = i.refund_allowed_amt
-
-    # def confirm_assign(self):
-    #     if not self.assign_to:
-    #         raise UserError('Please assign a Teacher..')
-    #     else:
-    #         if self.phone_number:
-    #             # for students refund responds
-    #             std_mobile = self.phone_number
-    #             student = self.student_name
-    #             std_template = '1107169772717746551'
-    #             refund_student = "Greetings" + " " + student + " " + "from Logic School of Management  we have received your refund request and will be contacting you soon."
-    #             url_std = "http://sms.mithraitsolutions.com/httpapi/httpapi?token=adf60dcda3a04ec6d13f827b38349609&sender=LSMKCH&number=" + str(
-    #                 std_mobile) + "&route=2&type=Text&sms=" + refund_student + "&templateid=" + std_template
-    #
-    #             # A GET request to the API
-    #             response = requests.get(url_std)
-    #
-    #         # for teacher refund request
-    #         if self.assign_to.mobile_phone:
-    #             mobile = self.assign_to.mobile_phone
-    #             user = self.assign_to.name
-    #             type = "Logic Students"
-    #             message_approved = "Hi " + user + ", new refund request received from " + type + " Ref : " + self.reference_no + " " + "For more details login to Logic Odoo ERP"
-    #             dlt_approved = '1107169772701012154'
-    #             url = "http://sms.mithraitsolutions.com/httpapi/httpapi?token=adf60dcda3a04ec6d13f827b38349609&sender=LSMKCH&number=" + str(
-    #                 mobile) + "&route=2&type=Text&sms=" + message_approved + "&templateid=" + dlt_approved
-    #
-    #             # A GET request to the API
-    #             response = requests.get(url)
-    #
-    #             # Print the response
-    #             response_json = response.json()
-    #             print(response_json)
-    #         self.status = 'teacher'
-    #         self.activity_schedule('refund_17.mail_activity_refund_alert_custome', user_id=self.assign_to.user_id.id,
-    #                                note='Please approve the refund request.')
-    #         activity_id = self.env['mail.activity'].search(
-    #             [('res_id', '=', self.id), ('user_id', '=', self.env.user.id), (
-    #                 'activity_type_id', '=', self.env.ref('refund_17.mail_activity_refund_alert_custome').id)])
-    #         if activity_id:
-    #             activity_id.action_feedback(feedback='Assigned')
-    #
-    #         if self.course.board_registration == True:
-    #             self.board_check = True
-    #         else:
-    #             self.board_check = False
-    #         return {
-    #             'effect': {
-    #                 'fadeout': 'slow',
-    #                 'message': 'Teacher Assigned',
-    #                 'type': 'rainbow_man',
-    #             }
-    #         }
 
     teacher_head_id = fields.Many2one('res.users', string='Teacher Head', compute='_compute_teacher_head_name',
                                       store=True, readonly=False)
@@ -340,13 +298,14 @@ class StudentRefund(models.Model):
             'amount': self.total_all_refund,
             'batch': self.batch,
             'course': self.course.id,
-            'student_admission_no': self.student_admission_no,
             'id_refund_record': self.id,
             'account_number': self.account_number,
             'bank_name': self.bank_name,
             'ifsc_code': self.ifsc_code,
             'account_holder_name': self.account_holder_name,
             'total_refund': self.total_all_refund,
+            'student_id': self.student_id.id,
+            'student_admission_no': self.student_id.gr_no
             # 'invoice_number': self.invoice_number,
             # 'invoice_date': self.invoice_date,
 
@@ -373,6 +332,12 @@ class StudentRefund(models.Model):
             }
         }
 
+    @api.onchange('student_id')
+    def _onchange_student_admission_officer(self):
+        for i in self:
+            if i.student_id:
+                i.admission_officer = i.student_id.admission_officer_id.name
+
     # def remove_activity_for_manager(self):
     #     print('erwyuqqwqwi')
         # if self.status != 'manager':
@@ -395,23 +360,21 @@ class StudentRefund(models.Model):
                     activity_id.unlink()
 
     def rejected(self):
-        self.status = 'reject'
-        activity_id = self.env['mail.activity'].search([('res_id', '=', self.id), ('user_id', '=', self.env.user.id), (
-            'activity_type_id', '=', self.env.ref('refund_17.mail_activity_refund_alert_custome').id)])
-        activity_id.action_feedback(feedback=f'Rejected {self.env.user.name}')
-        other_activity_ids = self.env['mail.activity'].search([('res_id', '=', self.id), (
-            'activity_type_id', '=', self.env.ref('refund_17.mail_activity_refund_alert_custome').id)])
-        other_activity_ids.unlink()
+        return {'type': 'ir.actions.act_window',
+                'name': _('Reject Reason'),
+                'res_model': 'refund.reject.reason',
+                'target': 'new',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'context': {'default_refund_id': self.id}, }
 
-        # current = self.env.user
-        # main_content = {
-        #     'subject': 'STUDENT REFUND',
-        #     'body_html': f"<h1>Hello {self.name} Your refund request is rejected..</h1>",
-        #     'email_to': self.email,
-        #     # 'attachment_ids': attachment
-        #
-        # }
-        # self.env['mail.mail'].create(main_content).send()
+
+    def student_count(self):
+        for record in self:
+            record.refund_student_count = self.env['op.student'].search_count(
+                [('id', '=', self.student_id.id)])
+
+    refund_student_count = fields.Integer(compute='student_count')
 
     def paid_payments(self):
 

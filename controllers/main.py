@@ -22,20 +22,16 @@ class PartnerForm(http.Controller):
             'invoice_number': kw.get('invoice_no_one'),
             'invoice_date': kw.get('invoice_date_one'),
             'refund_amt': kw.get('amount_one'),
-
         }
         res_list_two = {
             'invoice_number': kw.get('invoice_no_two'),
             'invoice_date': kw.get('invoice_date_two'),
             'refund_amt': kw.get('amount_two'),
-
         }
         res_list_three = {
             'invoice_number': kw.get('invoice_no_three'),
-
             'invoice_date': kw.get('invoice_date_three'),
             'refund_amt': kw.get('amount_three'),
-
         }
         abc.append((0, 0, res_list))
         if kw.get('invoice_date_two') != '':
@@ -60,10 +56,7 @@ class PartnerForm(http.Controller):
             'parent_number': kw.get('parent_no'),
             'inv_ids': abc,
             'refund_allowed_amt': kw.get('amount_total'),
-
-
             # 'sale_order_id': kw.get('sale_order')
         })
-
 
         return request.render("refund_17.tmp_refund_form_success", {})

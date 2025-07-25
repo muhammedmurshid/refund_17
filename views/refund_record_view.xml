@@ -14,7 +14,8 @@
                 <field name="reason"/>
                 <field name="total_all_refund" sum="Total" widget="monetary"/>
                 <field name="verified"/>
-                <field name="status"/>
+                <field name="status" widget="badge"  decoration-success="status == 'paid'"
+                       decoration-danger="status == 'reject'" decoration-primary="status == 'approved'"/>
             </tree>
 
         </field>
@@ -98,11 +99,6 @@
 
                     <button name='confirm_assign' class="oe_highlight" string="Confirm"
                             type="object"
-                            context="{'default_user_id': active_id}"
-                            invisible="status in ['teacher','head_assign','manager','accounts','reject','paid']"
-                            groups="refund_17.group_refund_accounts"/>
-                    <button name='rejected' class="oe_highlight" string="Reject"
-                            type="object"
                             invisible="status in ['teacher','head_assign','manager','accounts','reject','paid']"
                             groups="refund_17.group_refund_accounts"/>
 
@@ -111,32 +107,20 @@
                             type="object"
                             invisible="status in ['accountant','head_assign','accounts','manager','reject','paid']"
                             groups="refund_17.group_refund_teacher"/>
-                    <button name='rejected' class="oe_highlight" string="Reject"
-                            type="object"
-                            invisible="status in ['accountant','head_assign','accounts','manager','reject','paid']"
-                            groups="refund_17.group_refund_teacher"/>
+
                     <button name='head_approval' class="oe_highlight" string="Approve"
                             type="object"
                             invisible="status in ['teacher','accounts','manager','accountant','reject','paid']"
                             groups="refund_17.group_refund_marketing_head"/>
-                    <button name='rejected' class="oe_highlight" string="Reject"
-                            type="object"
-                            invisible="status in ['teacher','accounts','manager','accountant','reject','paid']"
-                            groups="refund_17.group_refund_marketing_head"/>
+
                     <button name='manager_approval' class="oe_highlight" string="Approve"
                             type="object"
                             invisible="status in ['teacher','head_assign','accountant','reject','accounts','paid']"
                             groups="refund_17.refund_manager"/>
-                    <button name='rejected' class="oe_highlight" string="Reject"
+                     <button name='rejected' string="Reject"
                             type="object"
-                            invisible="status in ['teacher','head_assign','accountant','reject','accounts','paid']"
-                            groups="refund_17.refund_manager"/>
-                    <!--                    &lt;!&ndash;                    <button name='accounts_approval' class="oe_highlight" string="Approve"&ndash;&gt;-->
-                    <!--                    &lt;!&ndash;                            type="object"&ndash;&gt;-->
-                    <!--                    &lt;!&ndash;                            attrs="{'invisible':[('status', 'in', ['manager','teacher','reject','head','paid'])]}"&ndash;&gt;-->
-                    <!--                    &lt;!&ndash;                            groups="refund_logic.group_refund_accounts"/>&ndash;&gt;-->
-                    <!--                    <button name='rejected' class="oe_highlight" string="Reject"-->
-                    <!--                            type="object" attrs="{'invisible':[('status', 'in', ['reject','accounts','paid'])]}"/>-->
+                            invisible="status in ['reject','paid']" class="oe_danger"
+                            groups="refund_17.group_refund_accounts"/>
                 </header>
                 <sheet>
 
@@ -145,13 +129,14 @@
                                 icon="fa-money">
                             <field string="Payment" name="payment_count" widget="statinfo"/>
                         </button>
+                        <button class="oe_stat_button" type="object" name="get_students" string="Student"
+                                icon="fa-user-o">
+                            <field string="Student" name="refund_student_count" widget="statinfo"/>
+                        </button>
                     </div>
                     <field name="reference_no" readonly="True"/>
                     <group>
                         <group>
-                            <!--                            <field name="assign_head" attrs="{'invisible':[('status', 'in', ['teacher','head_assign','manager','accounts','reject','paid'])]}"/>-->
-
-                            <!--                            <field name="name" readonly="True"/>-->
                             <field name="assign_to"
                                    invisible="status in ['teacher','head_assign','manager','accounts','reject','paid']"/>
                             <field name="student_id"/>
@@ -165,8 +150,6 @@
                             <field name="parent_number"/>
                             <field name="student_admission_no"/>
                             <field name="currency_id" invisible="1"/>
-                            <!--                            <field name="invoice_number"/>-->
-                            <!--                            <field name="invoice_date"/>-->
                             <field name="reason"/>
                         </group>
                         <group>
@@ -175,13 +158,13 @@
                             <field name="amount" invisible="1"/>
                             <field name="board_check" invisible="1"/>
                             <field name="head_reason"
-                                   readonly="make_visible_head == True or status in ['accountant','accounts','manager','teacher','reject','paid']"/>
+                                   required="status in 'head_assign'" readonly="status not in 'head_assign'"/>
                             <field name="sat_class"
-                                   readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
+                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
                             <field name="teacher_reason"
-                                   readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
+                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
                             <field name="stream"
-                                   readonly="make_visible_teacher == True or status in ['accountant','accounts','manager','reject','paid']"/>
+                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
                             <field name="attended_class"
                                    readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
                             <field name="total_class"
@@ -189,13 +172,11 @@
                             <field name="session_completed"
                                    readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
                             <field name="part_attended"
-                                   readonly="make_visible_teacher == True or status in['accountant','accounts','head_assign','manager','reject','paid']"/>
+                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
                             <field name="admission_officer"
                                    readonly="status in ['accountant','accounts','head_assign','teacher','reject','paid']"/>
                             <field name="board_registration"
                                    readonly="make_visible_teacher == True or board_check == False or status in ['accountant','head_assign','accounts','manager','head','reject','paid']"/>
-
-
                         </group>
                         <group>
                             <field name="ref_total" widget="monetary" style="color: red;"/>
@@ -232,6 +213,14 @@
                                 </tree>
                             </field>
                         </page>
+                        <page string="Reject Details" name="reject_details" invisible="status != 'reject'">
+                            <group>
+                                <group>
+                                    <field name="reject_reason" readonly="1"/>
+                                    <field name="reject_date" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
 
                     <group name="note_group" col="6">
@@ -257,6 +246,7 @@
             </form>
         </field>
     </record>
+
     <record id="seq_students_refund" model="ir.sequence">
         <field name="name">Students Refund</field>
         <field name="code">student.refund</field>
@@ -266,14 +256,18 @@
         <field name="number_next">1</field>
         <field name="number_increment">1</field>
     </record>
+
     <record model="ir.actions.act_window" id="refund_student_view_tree">
         <field name="name">Refund</field>
         <field name="res_model">student.refund</field>
-        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="view_mode">tree,form,kanban,activity</field>
     </record>
     <menuitem name="Refund" id="menu_student_refund" action="refund_student_view_tree"
               web_icon="refund_17,static/description/icon.png"
               sequence="4"/>
+
+    <menuitem name="Refund Records" id="sub_menu_refund" action="refund_student_view_tree" parent="menu_student_refund"
+              sequence="1"/>
     <!--    <menuitem-->
     <!--            id="menu_view_faculty_set"-->
     <!--            name="Faculty"-->

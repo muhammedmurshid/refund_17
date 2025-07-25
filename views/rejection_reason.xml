@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   <!-- Odoo View Definition for Whatsapp Message Form -->
+   <record id="refund_rejection_reason_wizard_form_view" model="ir.ui.view">
+       <field name="name">refund.rejection.view.form</field>
+       <field name="model">refund.reject.reason</field>
+       <field name="priority" eval="8"/>
+       <field name="arch" type="xml">
+           <form string="Refund Rejection Reason">
+               <group>
+                   <field name="refund_id"/>
+                   <field name="reason"/>
+               </group>
+               <footer>
+                   <button name="action_reject" string="Reject" type="object"/>
+                   <button name="cancel" string="Cancel" special="cancel"/>
+               </footer>
+           </form>
+       </field>
+   </record>
+</odoo>

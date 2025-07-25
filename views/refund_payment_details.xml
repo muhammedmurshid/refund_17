@@ -57,12 +57,12 @@
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Reverted" bg_color="bg-danger"
-                            invisible = "status != 'reverted'"/>
+                            invisible="status != 'reverted'"/>
                     <widget name="web_ribbon" title="Paid" bg_color="bg-success"
-                            invisible = "status != 'paid'"/>
+                            invisible="status != 'paid'"/>
                     <group>
                         <group>
-                            <field name="name"/>
+                            <field name="student_id"/>
                             <field name="amount" widget="monetary"/>
                             <field name="batch"/>
                             <field name="course"/>
@@ -84,7 +84,7 @@
                         </group>
                         <group>
                             <field name="transaction_id"/>
-                            <field name="date_of_refund"/>
+                            <field name="date_of_refund" required="status == 'in_payment'"/>
                             <field name="refund_amount" widget='monetary' options="{'currency_field': 'currency_id'}"
                                    invisible="1"/>
                         </group>
@@ -92,13 +92,14 @@
 
                     <group name="note_group" col="6">
                         <group class="oe_subtotal_footer oe_right" colspan="2" name="payment">
-                            <!--                            <field name="total_net_hour_amount"/>-->
-                            <!--                            <field name="duration_amount"/>-->
+                            <field name="taxable_amount"/>
+                            <field name="cgst_amount"/>
+                            <field name="sgst_amount"/>
 
-                            <div class="oe_subtotal_footer_separator oe_inline">
-                                <label for="total_refund" string="Total Paid"/>
-                            </div>
-                            <field name="total_refund" nolabel="1" class="oe_subtotal_footer_separator"
+                            <!--                            <div class="oe_subtotal_footer_separator oe_inline">-->
+                            <!--                                <label for="total_refund" string="Total Paid"/>-->
+                            <!--                            </div>-->
+                            <field name="total_refund"
                                    widget='monetary' options="{'currency_field': 'currency_id'}"/>
                             <!--                                   attrs="{'invisible':[('state','in',['draft'])]}"/>-->
 
@@ -118,13 +119,18 @@
         <field name="model">refund.payment</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
-                <field name="amount" sum="Total" widget="monetary"/>
-                <field name="course"/>
                 <field name="date_of_refund"/>
+                <field name="student_id"/>
+                <!--                <field name="amount" sum="Total" widget="monetary"/>-->
+                <field name="batch"/>
+                <field name="course"/>
+                <field name="taxable_amount" sum="Total" widget="monetary"/>
+                <field name="cgst_amount" sum="Total" widget="monetary"/>
+                <field name="sgst_amount" sum="Total" widget="monetary"/>
                 <field name="total_refund" sum="Total" widget="monetary"/>
-                <field name="currency_id" invisible="1"/>
-                <field name="status"/>
+                <field name="currency_id" optional="hide"/>
+                <field name="status" widget="badge" decoration-success="status == 'paid'"
+                       decoration-danger="status == 'cancel'"/>
 
             </tree>
 
@@ -181,23 +187,22 @@
     <!--        </field>-->
     <!--    </record>-->
 
-<!--    <record id="view_refund_sheet_dashboard_tree" model="ir.ui.view">-->
-<!--        <field name="name">refund.tree.sheet</field>-->
-<!--        <field name="model">refund.payment</field>-->
-<!--        <field name="priority">20</field>-->
-<!--        <field name="inherit_id" ref="Refund.refund_data_tree"/>-->
-<!--        <field name="mode">primary</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            -->
-<!--        </field>-->
-<!--    </record>-->
+    <!--    <record id="view_refund_sheet_dashboard_tree" model="ir.ui.view">-->
+    <!--        <field name="name">refund.tree.sheet</field>-->
+    <!--        <field name="model">refund.payment</field>-->
+    <!--        <field name="priority">20</field>-->
+    <!--        <field name="inherit_id" ref="Refund.refund_data_tree"/>-->
+    <!--        <field name="mode">primary</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            -->
+    <!--        </field>-->
+    <!--    </record>-->
 
     <record model="ir.actions.act_window" id="refund_payment_view_tree">
         <field name="name">Refund Payment</field>
         <field name="res_model">refund.payment</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
     </record>
-
     <menuitem name="Refund Payment" id="menu_refund_payment" action="refund_payment_view_tree"
               parent="menu_student_refund"
               groups="refund_17.group_refund_accounts"/>

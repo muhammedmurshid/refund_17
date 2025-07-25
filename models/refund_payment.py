@@ -9,7 +9,8 @@ class RefundPayment(models.Model):
     _order = 'id desc'
 
     name = fields.Char(string='Name', readonly=True)
-    amount = fields.Float(string='Total Refund', readonly=True)
+    amount = fields.Float(string='Total Refund')
+    student_id = fields.Many2one('op.student', string="Student")
     batch = fields.Char(string='Batch', readonly=True)
     course = fields.Many2one('op.course', string='Course', readonly=True)
     id_refund_record = fields.Integer(string='Refund Record id')
@@ -31,6 +32,18 @@ class RefundPayment(models.Model):
     account_holder_name = fields.Char(string='Account holder name')
     ifsc_code = fields.Char(string='IFSC Code')
     bank_name = fields.Char(string='Bank Name')
+    total_refund = fields.Float(string='Total Amount', compute='compute_total_refund_amount', store=True)
+    cgst_amount = fields.Float(string="CGST Amount", compute='compute_total_refund_amount', store=True)
+    sgst_amount = fields.Float(string="SGST Amount", compute='compute_total_refund_amount', store=True)
+    taxable_amount = fields.Float(string="Taxable Amount", compute='compute_total_refund_amount', store=True)
+
+    @api.depends('amount')
+    def compute_total_refund_amount(self):
+        for rec in self:
+            rec.cgst_amount = rec.amount * 0.09
+            rec.sgst_amount = rec.amount * 0.09
+            rec.taxable_amount = rec.amount - (rec.cgst_amount + rec.sgst_amount)
+            rec.total_refund = rec.amount
 
     def action_return_to_draft(self):
         self.status = 'draft'
@@ -65,7 +78,6 @@ class RefundPayment(models.Model):
             'context': {'default_user': 'manager'}
         }
 
-    total_refund = fields.Float('Total Amount')
 
     def paid(self):
         ss = self.env['student.refund'].search([('id', '=', self.id_refund_record)])
@@ -74,23 +86,29 @@ class RefundPayment(models.Model):
             'date': fields.Datetime.now(), 'admission_no': ss.student_id.gr_no, 'fee_type': 'Credit Note',
             'batch_id': ss.student_id.batch_id.id, 'amount': self.total_refund, 'student_id': ss.student_id.id,
             'refund_id': self.id_refund_record,
-            'refund_given_by': self.env.user.id
+            'refund_given_by': self.env.user.id,
+            'cgst_amount': self.cgst_amount,
+            'sgst_amount': self.sgst_amount,
+            'taxable_amount': self.taxable_amount,
+            'branch': self.student_id.branch_id.name,
+            'reason': ss.reason
         })
         voucher_no = self.env['op.credit.notes'].sudo().search([('student_id', '=', ss.student_id.id)], limit=1,
                                                                order='id desc')
         ss.status = 'paid'
         sl_no = len(ss.student_id.payment_ids)
         ss.student_id.sudo().write({
+            'state': 'stoped',
+            'drop_date': fields.Datetime.now(),
+            'credit_note_date': fields.Datetime.now(),
+            'credit_note_reason': ss.reason,
+            'credit_note_amount': self.total_refund,
             'payment_ids': [(0, 0, {'date': fields.Datetime.now(), 'payment_mode': 'Credit Note',
                                     'voucher_name': 'Credit Note', 'sl_no': sl_no + 1,
                                     'debit_amount': self.total_refund, 'voucher_no': voucher_no.voucher_no,
                                     'type': 'credit_note', 'batch_name': ss.student_id.batch_id.name,
                                     'course_name': ss.student_id.course_id.name, 'fee_name': 'Credit Note'})]
         })
-
-        # for i in ss:
-        #     if self.name == i.student_name and self.student_admission_no == i.student_admission_no and self.id_refund_record == i.id:
-        #         i.status = 'paid'
 
         self.status = 'paid'
         activity_id = self.env['mail.activity'].search(

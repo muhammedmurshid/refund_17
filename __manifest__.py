@@ -14,7 +14,9 @@
         'views/reverting_reason.xml',
         # 'views/portal_page.xml',
         'views/assignment_wizard.xml',
-        'views/refund_link.xml'
+        'views/refund_link.xml',
+        'views/rejection_reason.xml',
+        'views/credit_note_details.xml'
 
     ],
     'assets': {
