@@ -80,6 +80,11 @@ class StudentRefund(models.Model):
 
     refund_allowed_amt = fields.Float(string='Total Paid', readonly=False)
 
+    def action_approve_selected(self):
+        for rec in self:
+            print(rec.student_name, 'rec name')
+            rec.sudo().write({'status': 'manager'})
+
     @api.depends('ded_ids.amount')
     def _amount_deduction_all(self):
         """
