@@ -68,9 +68,6 @@ class StudentRefund(models.Model):
 
     @api.depends('inv_ids.refund_amt')
     def _amount_all(self):
-        """
-        Compute the total amounts of the SO.
-        """
         total = 0
         for order in self.inv_ids:
             total += order.refund_amt

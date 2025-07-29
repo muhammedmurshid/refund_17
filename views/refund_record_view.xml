@@ -7,14 +7,15 @@
             <tree multi_edit="1">
                 <field name="currency_id" invisible="1" optional="hide"/>
                 <field name="reference_no"/>
-                <field name="create_date" string="Refund Date" type="Date"/>
+                <field name="create_date" string="Request Date" widget="date"/>
                 <field name="student_name"/>
+                <field name="phone_number" string="Mobile" widget="phone"/>
                 <field name="batch"/>
                 <field name="course"/>
                 <field name="reason"/>
                 <field name="total_all_refund" sum="Total" widget="monetary"/>
                 <field name="verified"/>
-                <field name="status" widget="badge"  decoration-success="status == 'paid'"
+                <field name="status" widget="badge" decoration-success="status == 'paid'"
                        decoration-danger="status == 'reject'" decoration-primary="status == 'approved'"/>
             </tree>
 
@@ -69,8 +70,6 @@
                 <field name="reference_no"/>
                 <field name="batch"/>
                 <field name="branch"/>
-
-
                 <!-- Define your search fields here -->
             </search>
         </field>
@@ -117,7 +116,7 @@
                             type="object"
                             invisible="status in ['teacher','head_assign','accountant','reject','accounts','paid']"
                             groups="refund_17.refund_manager"/>
-                     <button name='rejected' string="Reject"
+                    <button name='rejected' string="Reject"
                             type="object"
                             invisible="status in ['reject','paid']" class="oe_danger"
                             groups="refund_17.group_refund_accounts"/>
@@ -139,49 +138,32 @@
                         <group>
                             <field name="assign_to"
                                    invisible="status in ['teacher','head_assign','manager','accounts','reject','paid']"/>
-                            <field name="student_id"/>
-                            <field name="teacher_head_id" string="Head" groups="refund_17.group_refund_teacher"/>
+                            <field name="student_id" invisible="1"/>
                             <field name="student_name"/>
-                            <field name="course"/>
+                            <field name="phone_number" string="Mobile" widget="phone"/>
+                            <field name="email"/>
                             <field name="batch"/>
                             <field name="branch"/>
-                            <field name="email"/>
-                            <field name="phone_number"/>
-                            <field name="parent_number"/>
-                            <field name="student_admission_no"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="reason"/>
+                            <field name="course"/>
                         </group>
                         <group>
                             <field name="make_visible_teacher" invisible="1"/>
                             <field name="make_visible_head" invisible="1"/>
                             <field name="amount" invisible="1"/>
                             <field name="board_check" invisible="1"/>
-                            <field name="head_reason"
-                                   required="status in 'head_assign'" readonly="status not in 'head_assign'"/>
-                            <field name="sat_class"
-                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
-                            <field name="teacher_reason"
-                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
-                            <field name="stream"
-                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
-                            <field name="attended_class"
-                                   readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
-                            <field name="total_class"
-                                   readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
-                            <field name="session_completed"
-                                   readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
-                            <field name="part_attended"
-                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
                             <field name="admission_officer"
                                    readonly="status in ['accountant','accounts','head_assign','teacher','reject','paid']"/>
+                            <field name="parent_number"/>
+                            <field name="student_admission_no"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="reason"/>
                             <field name="board_registration"
                                    readonly="make_visible_teacher == True or board_check == False or status in ['accountant','head_assign','accounts','manager','head','reject','paid']"/>
                         </group>
                         <group>
-                            <field name="ref_total" widget="monetary" style="color: red;"/>
+
                             <field name="make_visible_accountant" invisible="1"/>
-                            <field name="verified"/>
+                            <field name="verified" invisible="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -194,6 +176,35 @@
                                     <field name="refund_amt" widget="monetary" string="Paid Amount"/>
                                 </tree>
                             </field>
+                        </page>
+                        <page string="Teacher Information" name="teacher_information">
+                            <group>
+                                <field name="assign_to" string="Class Coordinator"
+                                       readonly="1"/>
+                                <field name="teacher_reason"
+                                       required="status in 'teacher'" readonly="status not in 'teacher'"/>
+                                <field name="sat_class"
+                                   required="status in 'teacher'" readonly="status not in 'teacher'"/>
+                                <field name="stream"
+                                       required="status in 'teacher'" readonly="status not in 'teacher'"/>
+                                <field name="attended_class"
+                                       readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
+                                <field name="total_class"
+                                       readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
+                                <field name="session_completed"
+                                       readonly="make_visible_teacher == True or status in ['accountant','head_assign','accounts','manager','reject','paid']"/>
+                                <field name="part_attended"
+                                       required="status in 'teacher'" readonly="status not in 'teacher'"/>
+                            </group>
+                        </page>
+                        <page string="Head Information" name="head_information">
+                            <group>
+                                <field name="teacher_head_id" string="Head" groups="refund_17.group_refund_teacher"/>
+                                <field name="head_reason"
+                                       required="status in 'head_assign'" readonly="status not in 'head_assign'"/>
+
+
+                            </group>
                         </page>
                         <page string="Bank Details" name="bank">
                             <group>
@@ -225,6 +236,7 @@
 
                     <group name="note_group" col="6">
                         <group class="oe_subtotal_footer oe_right" colspan="2" name="ref_total">
+                            <field name="ref_total" widget="monetary" style="color: red;"/>
                             <field name="total_deduction" widget="monetary"/>
                             <field name="refund_allowed_amt" widget="monetary"
                                    readonly="make_visible_accountant == True"/>
